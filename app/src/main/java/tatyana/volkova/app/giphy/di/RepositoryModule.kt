@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import tatyana.volkova.app.giphy.data.device.datasource.DeviceGifDataSource
+import tatyana.volkova.app.giphy.data.idatasource.IDeviceGifDataSource
 import tatyana.volkova.app.giphy.data.idatasource.IRemoteGifDataSource
 import tatyana.volkova.app.giphy.data.repository.GifRepository
 import tatyana.volkova.app.giphy.domain.irepository.IGifRepository
@@ -14,8 +16,9 @@ class RepositoryModule {
 
     @Provides
     internal fun provideGifRepository(
-        remoteGifDataSource: IRemoteGifDataSource
+        remoteGifDataSource: IRemoteGifDataSource,
+        deviceGifDataSource: IDeviceGifDataSource
     ): IGifRepository {
-        return GifRepository(remoteGifDataSource)
+        return GifRepository(remoteGifDataSource, deviceGifDataSource)
     }
 }

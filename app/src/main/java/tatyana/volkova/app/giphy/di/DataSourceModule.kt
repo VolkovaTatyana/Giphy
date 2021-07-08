@@ -4,6 +4,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import tatyana.volkova.app.giphy.data.device.datasource.DeviceGifDataSource
+import tatyana.volkova.app.giphy.data.device.db.dao.GifDao
+import tatyana.volkova.app.giphy.data.device.db.entity.GifEntity
+import tatyana.volkova.app.giphy.data.idatasource.IDeviceGifDataSource
 import tatyana.volkova.app.giphy.data.idatasource.IRemoteGifDataSource
 import tatyana.volkova.app.giphy.data.mapper.IMapper
 import tatyana.volkova.app.giphy.data.remote.datasource.RemoteGifDataSource
@@ -23,5 +27,15 @@ class DataSourceModule {
         @Remote executor: IExecutor
     ): IRemoteGifDataSource {
         return RemoteGifDataSource(apiService, mapper, executor)
+    }
+
+    @Provides
+    fun provideDeviceGifDataSource(
+        dao: GifDao,
+        toDomainMapper: IMapper<GifEntity, Gif>,
+        toDeviceMapper: IMapper<Gif, GifEntity>,
+        @Remote executor: IExecutor
+    ): IDeviceGifDataSource {
+        return DeviceGifDataSource(dao, toDomainMapper, toDeviceMapper, executor)
     }
 }

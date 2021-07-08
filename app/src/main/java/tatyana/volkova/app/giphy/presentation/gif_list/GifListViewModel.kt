@@ -6,23 +6,45 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import tatyana.volkova.app.giphy.domain.model.Gif
-import tatyana.volkova.app.giphy.domain.usecase._base.GetGifsUseCase
+import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveGifsUseCase
+import tatyana.volkova.app.giphy.domain.usecase.GetGifsUseCase
+import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsUseCase
+import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableCompletableObserver
+import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableObserver
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableSingleObserver
 import javax.inject.Inject
 
 @HiltViewModel
 class GifListViewModel @Inject constructor(
-    private val getGifsUseCase: GetGifsUseCase
+    private val getAndSaveGifsUseCase: GetAndSaveGifsUseCase,
+    private val observeGifsUseCase: ObserveGifsUseCase
 ) : ViewModel() {
 
     private val list = MutableLiveData<List<Gif>>()
     fun getList(): LiveData<List<Gif>> = list
 
     init {
-        getGifsUseCase.execute(object : SimpleDisposableSingleObserver<List<Gif>>() {
-            override fun onSuccess(result: List<Gif>) {
-                Log.e(TAG, result.toString())
-                list.postValue(result)
+        getGifsRemoteAndSaveToDb()
+        observeGifsFromDb()
+    }
+
+    private fun getGifsRemoteAndSaveToDb() {
+        getAndSaveGifsUseCase.execute(object : SimpleDisposableCompletableObserver() {
+            override fun onComplete() {
+                Log.e(TAG, "getAndSaveGifsUseCase onComplete")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.e(TAG, e.localizedMessage ?: e.stackTraceToString())
+            }
+        })
+    }
+
+    private fun observeGifsFromDb() {
+        observeGifsUseCase.execute(object : SimpleDisposableObserver<List<Gif>>() {
+            override fun onNext(t: List<Gif>) {
+                Log.e(TAG, "observeGifsFromDb onNext")
+                list.postValue(t)
             }
 
             override fun onError(e: Throwable) {
@@ -32,7 +54,8 @@ class GifListViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        getGifsUseCase.clear()
+        getAndSaveGifsUseCase.clear()
+        observeGifsUseCase.clear()
         super.onCleared()
     }
 
