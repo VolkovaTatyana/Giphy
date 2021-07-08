@@ -1,4 +1,4 @@
-package tatyana.volkova.app.giphy.app.presentation.gif
+package tatyana.volkova.app.giphy.presentation.gif
 
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint

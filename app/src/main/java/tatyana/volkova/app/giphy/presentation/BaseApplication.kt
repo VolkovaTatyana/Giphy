@@ -1,4 +1,4 @@
-package tatyana.volkova.app.giphy.app.presentation
+package tatyana.volkova.app.giphy.presentation
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

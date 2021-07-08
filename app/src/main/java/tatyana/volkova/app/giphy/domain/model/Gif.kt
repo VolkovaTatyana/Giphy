@@ -1,5 +1,7 @@
 package tatyana.volkova.app.giphy.domain.model
 
 data class Gif(
-    val title: String
+    val id: String,
+    val title: String,
+    val url: String
 )

@@ -7,14 +7,18 @@
 
     <fragment
         android:id="@+id/gifListFragment"
-        android:name="tatyana.volkova.app.giphy.app.presentation.gif_list.GifListFragment"
+        android:name="tatyana.volkova.app.giphy.presentation.gif_list.GifListFragment"
         android:label="GifListFragment"
-        tools:layout="@layout/fragment_gif_list"/>
+        tools:layout="@layout/fragment_gif_list">
+        <action
+            android:id="@+id/action_gifListFragment_to_gifFragment"
+            app:destination="@id/gifFragment" />
+    </fragment>
 
 
     <fragment
         android:id="@+id/gifFragment"
-        android:name="tatyana.volkova.app.giphy.app.presentation.gif.GifFragment"
+        android:name="tatyana.volkova.app.giphy.presentation.gif.GifFragment"
         android:label="GifFragment"
         tools:layout="@layout/fragment_gif"/>
 

@@ -1,4 +1,4 @@
-package tatyana.volkova.app.giphy.app.presentation.gif_list
+package tatyana.volkova.app.giphy.presentation.gif_list
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

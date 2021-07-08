@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import tatyana.volkova.app.giphy.app.presentation.BaseApplication
+import tatyana.volkova.app.giphy.presentation.BaseApplication
 import javax.inject.Singleton
 
 @Module

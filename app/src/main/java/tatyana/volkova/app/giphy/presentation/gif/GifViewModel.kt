@@ -1,4 +1,4 @@
-package tatyana.volkova.app.giphy.app.presentation.gif
+package tatyana.volkova.app.giphy.presentation.gif
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

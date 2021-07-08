@@ -105,6 +105,9 @@ dependencies {
 
     //DataBinding
     kapt 'com.android.databinding:compiler:3.1.4'
+
+    //LastAdapter
+    api 'com.github.nitrico.lastadapter:lastadapter:2.3.0'
 }
 
 kapt {

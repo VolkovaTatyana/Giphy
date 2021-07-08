@@ -1,4 +1,4 @@
-package tatyana.volkova.app.giphy.app.presentation
+package tatyana.volkova.app.giphy.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
