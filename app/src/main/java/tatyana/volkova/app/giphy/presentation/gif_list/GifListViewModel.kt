@@ -7,11 +7,9 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveGifsUseCase
-import tatyana.volkova.app.giphy.domain.usecase.GetGifsUseCase
 import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsUseCase
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableCompletableObserver
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableObserver
-import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableSingleObserver
 import javax.inject.Inject
 
 @HiltViewModel
