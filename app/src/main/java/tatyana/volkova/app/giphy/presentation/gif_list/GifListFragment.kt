@@ -26,6 +26,7 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvGifList.adapter = adapter
+        adapter.viewModel = viewModel
         viewModel.getList().observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }

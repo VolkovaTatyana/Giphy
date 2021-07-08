@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -8,23 +9,55 @@
             name="gif"
             type="tatyana.volkova.app.giphy.domain.model.Gif" />
 
+        <variable
+            name="vm"
+            type="tatyana.volkova.app.giphy.presentation.gif_list.GifListViewModel" />
+
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivGif"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
             android:gifUrl="@{gif.url}"
-            android:minWidth="100dp"
-            android:minHeight="100dp"
+            android:minWidth="150dp"
+            android:minHeight="150dp"
             android:scaleType="centerCrop"
-            tools:src="@mipmap/ic_launcher"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_launcher" />
 
-    </FrameLayout>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ibDelete"
+            android:onClick="@{() -> vm.removeGif(gif.id)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_close_24"
+            app:layout_constraintBottom_toTopOf="@+id/ivGif"
+            app:layout_constraintEnd_toEndOf="@+id/ivGif"
+            app:layout_constraintStart_toEndOf="@+id/ivGif"
+            app:layout_constraintTop_toTopOf="@+id/ivGif" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{gif.title}"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/ivGif"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/ivGif"
+            app:layout_constraintStart_toStartOf="@+id/ivGif"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            tools:text="Some title text from few words"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

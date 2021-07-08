@@ -7,10 +7,11 @@ import tatyana.volkova.app.giphy.R
 
 @BindingAdapter("android:gifUrl")
 fun ImageView.loadGif(url: String?) {
-
-    Glide.with(this)
-        .load(url)
-        .placeholder(R.mipmap.ic_launcher)
-        .error(R.mipmap.ic_launcher)
-        .into(this)
+    url?.let {
+        Glide.with(this)
+            .load(url)
+            .placeholder(R.drawable.ic_baseline_image_24)
+            .error(R.drawable.ic_baseline_broken_image_24)
+            .into(this)
+    }
 }

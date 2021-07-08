@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveGifsUseCase
 import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsUseCase
+import tatyana.volkova.app.giphy.domain.usecase.RemoveGifUseCase
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableCompletableObserver
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableObserver
 import javax.inject.Inject
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class GifListViewModel @Inject constructor(
     private val getAndSaveGifsUseCase: GetAndSaveGifsUseCase,
-    private val observeGifsUseCase: ObserveGifsUseCase
+    private val observeGifsUseCase: ObserveGifsUseCase,
+    private val removeGifUseCase: RemoveGifUseCase
 ) : ViewModel() {
 
     private val list = MutableLiveData<List<Gif>>()
@@ -51,9 +53,22 @@ class GifListViewModel @Inject constructor(
         })
     }
 
+    fun removeGif(id: String) {
+        removeGifUseCase.execute(object : SimpleDisposableCompletableObserver() {
+            override fun onComplete() {
+                Log.e(TAG, "deleteGif onComplete")
+            }
+
+            override fun onError(e: Throwable) {
+                Log.e(TAG, e.localizedMessage ?: e.stackTraceToString())
+            }
+        }, RemoveGifUseCase.Params(id))
+    }
+
     override fun onCleared() {
         getAndSaveGifsUseCase.clear()
         observeGifsUseCase.clear()
+        removeGifUseCase.clear()
         super.onCleared()
     }
 

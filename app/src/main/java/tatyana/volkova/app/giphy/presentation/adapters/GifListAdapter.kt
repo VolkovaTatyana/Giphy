@@ -1,19 +1,19 @@
 package tatyana.volkova.app.giphy.presentation.adapters
 
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import tatyana.volkova.app.giphy.R
 import tatyana.volkova.app.giphy.databinding.ItemGifBinding
 import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.presentation.gif_list.GifListFragmentDirections
+import tatyana.volkova.app.giphy.presentation.gif_list.GifListViewModel
 
 class GifListAdapter : ListAdapter<Gif, GifListAdapter.GifViewHolder>(GifItemDiffCallBack()) {
+
+    var viewModel: GifListViewModel? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         GifViewHolder(
@@ -30,25 +30,18 @@ class GifListAdapter : ListAdapter<Gif, GifListAdapter.GifViewHolder>(GifItemDif
         }
     }
 
-    class GifViewHolder(private val binding: ItemGifBinding) : RecyclerView.ViewHolder(binding.root) {
-
-/*        init {
-            binding.setClickListener { view ->
-                binding.photo?.let { photo ->
-                    val uri = Uri.parse(photo.user.attributionUrl)
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    view.context.startActivity(intent)
-                }
-            }
-        }*/
+    inner class GifViewHolder(private val binding: ItemGifBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Gif) {
             binding.apply {
                 gif = item
+                viewModel?.let {
+                    vm = it
+                }
                 executePendingBindings()
             }
 
-            binding.root.setOnClickListener {
+            binding.ivGif.setOnClickListener {
                 it.findNavController().navigate(GifListFragmentDirections.actionGifListFragmentToGifFragment(item))
             }
         }
