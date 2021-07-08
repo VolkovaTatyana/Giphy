@@ -1,14 +1,12 @@
 package tatyana.volkova.app.giphy.presentation.gif_list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.nitrico.lastadapter.LastAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import tatyana.volkova.app.giphy.R
 import tatyana.volkova.app.giphy.databinding.FragmentGifListBinding
