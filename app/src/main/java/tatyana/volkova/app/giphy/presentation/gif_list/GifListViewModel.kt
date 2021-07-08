@@ -1,6 +1,7 @@
 package tatyana.volkova.app.giphy.presentation.gif_list
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,10 +15,10 @@ class GifListViewModel @Inject constructor(
     private val getGifsUseCase: GetGifsUseCase
 ) : ViewModel() {
 
-    val list = MutableLiveData<List<Gif>>()
+    private val list = MutableLiveData<List<Gif>>()
+    fun getList(): LiveData<List<Gif>> = list
 
     init {
-        Log.e(TAG, "GifListViewModel init!!!")
         getGifsUseCase.execute(object : SimpleDisposableSingleObserver<List<Gif>>() {
             override fun onSuccess(result: List<Gif>) {
                 Log.e(TAG, result.toString())
@@ -35,7 +36,8 @@ class GifListViewModel @Inject constructor(
         super.onCleared()
     }
 
-    companion object{
+    //For logs
+    companion object {
         const val TAG = "GifListViewModel"
     }
 }

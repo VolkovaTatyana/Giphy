@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.nitrico.lastadapter.LastAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import tatyana.volkova.app.giphy.R
@@ -25,9 +26,11 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvGifList.adapter = adapter
-        viewModel.list.observe(viewLifecycleOwner) {
+        viewModel.getList().observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+
+        findNavController()
     }
 
     override fun onCreateView(
@@ -42,7 +45,7 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
     }
 
     //For logs
-    companion object{
+    companion object {
         const val TAG = "GifListFragment"
     }
 }

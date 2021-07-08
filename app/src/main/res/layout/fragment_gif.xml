@@ -14,14 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivGif"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="16dp"
             android:gifUrl="@{item.url}"
-            android:minHeight="200dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

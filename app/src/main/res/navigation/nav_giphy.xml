@@ -20,6 +20,10 @@
         android:id="@+id/gifFragment"
         android:name="tatyana.volkova.app.giphy.presentation.gif.GifFragment"
         android:label="GifFragment"
-        tools:layout="@layout/fragment_gif"/>
+        tools:layout="@layout/fragment_gif">
+        <argument
+            android:name="gif"
+            app:argType="tatyana.volkova.app.giphy.domain.model.Gif"/>
+    </fragment>
 
 </navigation>
