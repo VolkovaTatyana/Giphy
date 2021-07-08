@@ -3,7 +3,6 @@ package tatyana.volkova.app.giphy.presentation.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import tatyana.volkova.app.giphy.databinding.ItemGifBinding
@@ -43,21 +42,6 @@ class GifListAdapter : ListAdapter<Gif, GifListAdapter.GifViewHolder>(GifItemDif
 
             binding.ivGif.setOnClickListener {
                 it.findNavController().navigate(GifListFragmentDirections.actionGifListFragmentToGifFragment(item))
-            }
-        }
-    }
-
-    companion object {
-        class GifItemDiffCallBack : DiffUtil.ItemCallback<Gif>() {
-
-            override fun areItemsTheSame(oldItem: Gif, newItem: Gif): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: Gif, newItem: Gif): Boolean {
-                return oldItem.id == newItem.id
-                        && oldItem.title == newItem.title
-                        && oldItem.url == newItem.url
             }
         }
     }

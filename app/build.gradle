@@ -107,6 +107,9 @@ dependencies {
 
     //DataBinding
     kapt 'com.android.databinding:compiler:3.1.4'
+
+    //Viewpager2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
 
 kapt {
