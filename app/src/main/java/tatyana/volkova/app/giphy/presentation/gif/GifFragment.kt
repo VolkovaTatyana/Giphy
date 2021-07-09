@@ -43,18 +43,9 @@ class GifFragment : Fragment(R.layout.fragment_gif) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getGif().observe(viewLifecycleOwner) {
-//            viewPager.setCurrentItem(it, true)
-//            binding.item = it
+        viewModel.getPair().observe(viewLifecycleOwner) {
+            adapter.submitList(it.first)
+            viewPager.setCurrentItem(it.second, false)
         }
-
-        viewModel.getList().observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
-    }
-
-    //For logs
-    companion object {
-        const val TAG = "GifFragment"
     }
 }

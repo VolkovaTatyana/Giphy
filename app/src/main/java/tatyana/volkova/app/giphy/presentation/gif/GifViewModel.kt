@@ -16,13 +16,18 @@ class GifViewModel @Inject constructor(
     private val observeGifsUseCase: ObserveGifsUseCase
 ) : ViewModel() {
 
-    private val list = MutableLiveData<List<Gif>>()
-    fun getList(): LiveData<List<Gif>> = list
-//    private val gifList = mutableListOf<Gif>()
-    private val currentGif = MutableLiveData<Gif>()
-    fun getGif(): LiveData<Gif> = currentGif
+    private val pair = MutableLiveData<Pair<List<Gif>, Int>>()
+    fun getPair(): LiveData<Pair<List<Gif>, Int>> = pair
+
+    private var currentGif: Gif? = null
+    private var gifs: List<Gif>? = null
+
     fun setGif(gif: Gif) {
-        currentGif.value = gif
+        currentGif = gif
+        gifs?.let { gifs ->
+            val position = gifs.indexOf(gif)
+            pair.postValue(Pair(gifs, position))
+        }
     }
 
     init {
@@ -32,9 +37,11 @@ class GifViewModel @Inject constructor(
     private fun observeGifsFromDb() {
         observeGifsUseCase.execute(object : SimpleDisposableObserver<List<Gif>>() {
             override fun onNext(t: List<Gif>) {
-                Log.e(GifListViewModel.TAG, "observeGifsFromDb onNext")
-//                gifList.addAll(t)
-                list.postValue(t)
+                gifs = t
+                currentGif?.let { gif ->
+                    val position = t.indexOf(gif)
+                    pair.postValue(Pair(t, position))
+                }
             }
 
             override fun onError(e: Throwable) {
