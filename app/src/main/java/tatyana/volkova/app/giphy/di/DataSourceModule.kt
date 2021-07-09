@@ -11,7 +11,8 @@ import tatyana.volkova.app.giphy.data.idatasource.IDeviceGifDataSource
 import tatyana.volkova.app.giphy.data.idatasource.IRemoteGifDataSource
 import tatyana.volkova.app.giphy.data.mapper.IMapper
 import tatyana.volkova.app.giphy.data.remote.datasource.RemoteGifDataSource
-import tatyana.volkova.app.giphy.data.remote.dto.GifDto
+import tatyana.volkova.app.giphy.data.remote.dto.BaseResponse
+import tatyana.volkova.app.giphy.data.remote.dto.GifWithPaginationDto
 import tatyana.volkova.app.giphy.data.remote.retrofit.ApiService
 import tatyana.volkova.app.giphy.domain.common.IExecutor
 import tatyana.volkova.app.giphy.domain.model.Gif
@@ -23,10 +24,11 @@ class DataSourceModule {
     @Provides
     fun provideRemoteGifDataSource(
         apiService: ApiService,
-        mapper: IMapper<GifDto, Gif>,
+        mapper: IMapper<GifWithPaginationDto, Gif>,
+        dtoMapper: IMapper<BaseResponse, List<GifWithPaginationDto>>,
         @Remote executor: IExecutor
     ): IRemoteGifDataSource {
-        return RemoteGifDataSource(apiService, mapper, executor)
+        return RemoteGifDataSource(apiService, mapper, dtoMapper, executor)
     }
 
     @Provides

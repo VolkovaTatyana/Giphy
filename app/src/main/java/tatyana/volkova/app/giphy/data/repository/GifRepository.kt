@@ -15,8 +15,8 @@ class GifRepository @Inject constructor(
     private val deviceGifDataSource: IDeviceGifDataSource
 ) : IGifRepository {
 
-    override fun getGifs(): Single<List<Gif>> {
-        return remoteGifDataSource.getGifs()
+    override fun getGifs(limit: Int, offset: Int): Single<List<Gif>> {
+        return remoteGifDataSource.getGifs(limit, offset)
     }
 
     override fun addGifs(gifs: List<Gif>): Completable {

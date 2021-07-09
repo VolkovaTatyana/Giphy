@@ -12,12 +12,15 @@ class GetAndSaveGifsUseCase @Inject constructor(
 ) : CompletableUseCase<GetAndSaveGifsUseCase.Params>() {
 
     override fun buildUseCaseCompletable(params: Params?): Completable {
-        return repository.getGifs()
-            .flatMapCompletable {
-                repository.addGifs(it)
-            }
-
+        return params?.let {
+            repository.getGifs(it.limit, it.offset)
+                .flatMapCompletable { list ->
+                    repository.addGifs(list)
+                }
+        } ?: kotlin.run {
+            Completable.error(IllegalArgumentException("Params can't be null!!!"))
+        }
     }
 
-    class Params
+    class Params(val limit: Int = 20, val offset: Int = 0)
 }

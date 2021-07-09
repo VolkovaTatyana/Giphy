@@ -37,7 +37,7 @@ class GifListViewModel @Inject constructor(
             override fun onError(e: Throwable) {
                 Log.e(TAG, e.localizedMessage ?: e.stackTraceToString())
             }
-        })
+        }, GetAndSaveGifsUseCase.Params(20, 0))
     }
 
     private fun observeGifsFromDb() {

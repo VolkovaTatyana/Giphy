@@ -5,11 +5,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import tatyana.volkova.app.giphy.data.device.db.entity.GifEntity
-import tatyana.volkova.app.giphy.data.mapper.GifDeviceToDomainMapper
-import tatyana.volkova.app.giphy.data.mapper.GifDomainToDeviceMapper
-import tatyana.volkova.app.giphy.data.mapper.GifRemoteToDomainMapper
-import tatyana.volkova.app.giphy.data.mapper.IMapper
+import tatyana.volkova.app.giphy.data.mapper.*
+import tatyana.volkova.app.giphy.data.remote.dto.BaseResponse
 import tatyana.volkova.app.giphy.data.remote.dto.GifDto
+import tatyana.volkova.app.giphy.data.remote.dto.GifWithPaginationDto
 import tatyana.volkova.app.giphy.domain.model.Gif
 
 @Module
@@ -17,7 +16,12 @@ import tatyana.volkova.app.giphy.domain.model.Gif
 class MappersModule {
 
     @Provides
-    internal fun provideGifRemoteToDomainMapper(): IMapper<GifDto, Gif> {
+    internal fun provideBaseResponseToListGifWithPaginationMapper(): IMapper<BaseResponse, List<GifWithPaginationDto>> {
+        return BaseResponseToListGifWithPaginationMapper()
+    }
+
+    @Provides
+    internal fun provideGifRemoteToDomainMapper(): IMapper<GifWithPaginationDto, Gif> {
         return GifRemoteToDomainMapper()
     }
 

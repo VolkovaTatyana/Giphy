@@ -17,7 +17,7 @@ import tatyana.volkova.app.giphy.presentation.adapters.GifListAdapter
 class GifListFragment : Fragment(R.layout.fragment_gif_list) {
 
     private val viewModel: GifListViewModel by viewModels()
-    lateinit var binding : FragmentGifListBinding
+    lateinit var binding: FragmentGifListBinding
 
     private val adapter = GifListAdapter()
 
@@ -29,11 +29,12 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
         binding = FragmentGifListBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
-        binding.rvGifList.layoutManager = if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            GridLayoutManager(requireContext(), 2)
-        } else {
-            GridLayoutManager(requireContext(), 3)
-        }
+        binding.rvGifList.layoutManager =
+            if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                GridLayoutManager(requireContext(), 2)
+            } else {
+                GridLayoutManager(requireContext(), 3)
+            }
 
         return binding.root
     }

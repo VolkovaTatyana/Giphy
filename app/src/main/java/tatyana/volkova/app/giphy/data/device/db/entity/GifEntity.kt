@@ -9,5 +9,8 @@ class GifEntity(
     val id: String,
     val title: String,
     val url: String,
+    val total: Int,
+    val count: Int,
+    val offset: Int,
     var deleted: Boolean
 )

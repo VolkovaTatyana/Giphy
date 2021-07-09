@@ -7,6 +7,9 @@ class GifDeviceToDomainMapper : IMapper<GifEntity, Gif> {
     override fun mapFrom(from: GifEntity) = Gif(
         id = from.id,
         title = from.title,
-        url = from.url
+        url = from.url,
+        totalCount = from.count,
+        count = from.count,
+        offset = from.offset
     )
 }
