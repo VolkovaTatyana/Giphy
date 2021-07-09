@@ -23,6 +23,11 @@ class GifListViewModel @Inject constructor(
     private val list = MutableLiveData<List<Gif>>()
     fun getList(): LiveData<List<Gif>> = list
 
+    //For pagination. Offset = page * limit
+    private val limit = 20
+    private var page = 0
+    private var hasMore = true
+
     init {
         getGifsRemoteAndSaveToDb()
         observeGifsFromDb()
@@ -37,14 +42,16 @@ class GifListViewModel @Inject constructor(
             override fun onError(e: Throwable) {
                 Log.e(TAG, e.localizedMessage ?: e.stackTraceToString())
             }
-        }, GetAndSaveGifsUseCase.Params(20, 0))
+        }, GetAndSaveGifsUseCase.Params(limit, page * limit))
     }
 
     private fun observeGifsFromDb() {
         observeGifsUseCase.execute(object : SimpleDisposableObserver<List<Gif>>() {
             override fun onNext(t: List<Gif>) {
-                Log.e(TAG, "observeGifsFromDb onNext")
                 list.postValue(t)
+                if (t.isEmpty().not()) {
+                    hasMore = t.last().totalCount > t.last().offset
+                }
             }
 
             override fun onError(e: Throwable) {
@@ -63,6 +70,13 @@ class GifListViewModel @Inject constructor(
                 Log.e(TAG, e.localizedMessage ?: e.stackTraceToString())
             }
         }, RemoveGifUseCase.Params(id))
+    }
+
+    fun nextPage() {
+        if (hasMore) {
+            page++
+            getGifsRemoteAndSaveToDb()
+        }
     }
 
     override fun onCleared() {

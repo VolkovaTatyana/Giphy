@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import tatyana.volkova.app.giphy.data.device.db.dao.GifDao
 import tatyana.volkova.app.giphy.data.device.db.entity.GifEntity
 
-@Database(entities = [GifEntity::class], version = 1, exportSchema = false)
+@Database(entities = [GifEntity::class], version = 2, exportSchema = false)
 abstract class GifDatabase : RoomDatabase() {
     abstract fun gifDao(): GifDao
 }

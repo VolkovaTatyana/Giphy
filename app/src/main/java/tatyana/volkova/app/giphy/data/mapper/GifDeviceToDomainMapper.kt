@@ -8,7 +8,7 @@ class GifDeviceToDomainMapper : IMapper<GifEntity, Gif> {
         id = from.id,
         title = from.title,
         url = from.url,
-        totalCount = from.count,
+        totalCount = from.total,
         count = from.count,
         offset = from.offset
     )

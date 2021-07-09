@@ -21,7 +21,9 @@ object DatabaseModule {
             appContext,
             GifDatabase::class.java,
             "gifsDatabase.db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

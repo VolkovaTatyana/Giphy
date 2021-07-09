@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import tatyana.volkova.app.giphy.R
 import tatyana.volkova.app.giphy.databinding.FragmentGifListBinding
 import tatyana.volkova.app.giphy.presentation.adapters.GifListAdapter
+import tatyana.volkova.app.giphy.presentation.pagination.paging
 
 @AndroidEntryPoint
 class GifListFragment : Fragment(R.layout.fragment_gif_list) {
@@ -35,6 +36,10 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
             } else {
                 GridLayoutManager(requireContext(), 3)
             }
+
+        binding.rvGifList.paging {
+            viewModel.nextPage()
+        }
 
         return binding.root
     }
