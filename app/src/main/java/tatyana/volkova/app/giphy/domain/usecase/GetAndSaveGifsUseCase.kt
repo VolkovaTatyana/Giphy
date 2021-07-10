@@ -1,8 +1,10 @@
 package tatyana.volkova.app.giphy.domain.usecase
 
 import io.reactivex.Completable
+import io.reactivex.subjects.Subject
 import tatyana.volkova.app.giphy.data.repository.GifRepository
 import tatyana.volkova.app.giphy.domain.model.Gif
+import tatyana.volkova.app.giphy.domain.model.Request
 import tatyana.volkova.app.giphy.domain.usecase._base.CompletableUseCase
 import java.lang.IllegalArgumentException
 import javax.inject.Inject

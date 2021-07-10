@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.Subject
 import tatyana.volkova.app.giphy.data.repository.GifRepository
 import tatyana.volkova.app.giphy.domain.model.Gif
+import tatyana.volkova.app.giphy.domain.model.Request
 import tatyana.volkova.app.giphy.domain.usecase._base.ObservableUseCase
 import javax.inject.Inject
 
@@ -31,6 +32,4 @@ class ObserveGifsWithQueryUseCase @Inject constructor(
     }
 
     class Params(val subject: Subject<Request>)
-
-    data class Request(val query: String? = "")
 }

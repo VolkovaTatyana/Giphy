@@ -22,6 +22,10 @@ class GifRepository @Inject constructor(
         return deviceGifDataSource.addGifs(gifs)
     }
 
+    override fun addGifsObservable(gifs: List<Gif>): Observable<List<Long>> {
+        return deviceGifDataSource.addGifsSingle(gifs).toObservable()
+    }
+
     override fun observeGifs(): Observable<List<Gif>> {
         return deviceGifDataSource.observeGifs()
     }

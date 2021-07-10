@@ -26,9 +26,9 @@ interface ApiService {
 
     @GET
     fun getOrSearchGifs(
-        @Url endPoint: String = "trending",
+        @Url endPoint: String,
         @Query("api_key") apiKey: String = BuildConfig.API_KEY,
-        @Query("query") query: String? = null,
+        @Query("q") query: String? = null,
         @Query("limit") limit: Int = 30,
         @Query("offset") offset: Int = 0,
 

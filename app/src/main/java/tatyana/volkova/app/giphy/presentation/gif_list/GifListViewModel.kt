@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.subjects.PublishSubject
 import tatyana.volkova.app.giphy.domain.model.Gif
+import tatyana.volkova.app.giphy.domain.model.Request
 import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveGifsUseCase
+import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveObservableUseCase
 import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsWithQueryUseCase
 import tatyana.volkova.app.giphy.domain.usecase.RemoveGifUseCase
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableCompletableObserver
@@ -16,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GifListViewModel @Inject constructor(
-    private val getAndSaveGifsUseCase: GetAndSaveGifsUseCase,
+    private val getAndSaveGifsUseCase: GetAndSaveObservableUseCase,
     private val observeGifsWithQueryUseCase: ObserveGifsWithQueryUseCase,
     private val removeGifUseCase: RemoveGifUseCase
 ) : ViewModel() {
@@ -30,17 +32,28 @@ class GifListViewModel @Inject constructor(
     private var hasMore = true
 
     //For search
-    private val searchSubject = PublishSubject.create<ObserveGifsWithQueryUseCase.Request>()
+    private val searchSubject = PublishSubject.create<Request>()
     private var searchQuery: String? = null
 
     init {
         getGifsRemoteAndSaveToDb()
         observeGifsFromDb()
-        searchSubject.onNext(ObserveGifsWithQueryUseCase.Request(""))
+        searchSubject.onNext(
+            Request(
+                limit = limit,
+                offset = page * limit,
+                query = ""
+            )
+        )
     }
 
     private fun getGifsRemoteAndSaveToDb() {
-        getAndSaveGifsUseCase.execute(object : SimpleDisposableCompletableObserver() {
+        getAndSaveGifsUseCase.execute(object : SimpleDisposableObserver<List<Long>>() {
+
+            override fun onNext(t: List<Long>) {
+                Log.e(TAG, "getAndSaveGifsUseCase onNext")
+            }
+
             override fun onComplete() {
                 Log.e(TAG, "getAndSaveGifsUseCase onComplete")
             }
@@ -48,14 +61,20 @@ class GifListViewModel @Inject constructor(
             override fun onError(e: Throwable) {
                 Log.e(TAG, e.localizedMessage ?: e.stackTraceToString())
             }
-        }, GetAndSaveGifsUseCase.Params(limit, page * limit, query = searchQuery))
+        }, GetAndSaveObservableUseCase.Params(searchSubject))
     }
 
     fun createObserveRequest(query: String) {
         page = 0
         hasMore = true
         searchQuery = query
-        searchSubject.onNext(ObserveGifsWithQueryUseCase.Request(query))
+        searchSubject.onNext(
+            Request(
+                limit = limit,
+                offset = page * limit,
+                query = query
+            )
+        )
     }
 
     private fun observeGifsFromDb() {
@@ -88,7 +107,13 @@ class GifListViewModel @Inject constructor(
     fun nextPage() {
         if (hasMore) {
             page++
-            getGifsRemoteAndSaveToDb()
+            searchSubject.onNext(
+                Request(
+                    limit = limit,
+                    offset = page * limit,
+                    query = searchQuery
+                )
+            )
         }
     }
 
