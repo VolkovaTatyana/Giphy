@@ -20,7 +20,7 @@ class ObserveGifsWithQueryUseCase @Inject constructor(
                             if (request.query.isNullOrBlank()) {
                                 list
                             } else {
-                                list.filter { it.title.contains(request.query) }
+                                list.filter { it.title.contains(request.query, ignoreCase = true) }
                             }
                         }
                 }
