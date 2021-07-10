@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.subjects.PublishSubject
 import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.domain.model.Request
-import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveGifsUseCase
 import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveObservableUseCase
 import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsWithQueryUseCase
 import tatyana.volkova.app.giphy.domain.usecase.RemoveGifUseCase

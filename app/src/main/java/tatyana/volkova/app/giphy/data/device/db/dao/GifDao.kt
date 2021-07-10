@@ -13,9 +13,6 @@ import tatyana.volkova.app.giphy.data.device.db.entity.GifEntity
 interface GifDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun saveGifs(gifs: List<GifEntity>): Completable
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun saveGifsSingle(gifs: List<GifEntity>): Single<List<Long>>
 
     @Query("SELECT * FROM gifs WHERE deleted = 0")

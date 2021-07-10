@@ -18,11 +18,6 @@ class DeviceGifDataSource @Inject constructor(
     private val executor: IExecutor
 ) : IDeviceGifDataSource {
 
-    override fun addGifs(gifs: List<Gif>): Completable {
-        return dao.saveGifs(gifs.map(toDeviceMapper::mapFrom))
-            .subscribeOn(executor.scheduler)
-    }
-
     override fun addGifsSingle(gifs: List<Gif>): Single<List<Long>> {
         return dao.saveGifsSingle(gifs.map(toDeviceMapper::mapFrom))
             .subscribeOn(executor.scheduler)

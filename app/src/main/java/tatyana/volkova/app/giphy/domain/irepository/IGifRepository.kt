@@ -8,7 +8,6 @@ import tatyana.volkova.app.giphy.domain.model.Gif
 interface IGifRepository {
 
     fun getGifs(query: String?, limit: Int, offset: Int): Single<List<Gif>>
-    fun addGifs(gifs: List<Gif>): Completable
     fun addGifsObservable(gifs: List<Gif>): Observable<List<Long>>
     fun observeGifs(): Observable<List<Gif>>
     fun deleteGif(id: String): Completable

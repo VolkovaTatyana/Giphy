@@ -18,10 +18,6 @@ class GifRepository @Inject constructor(
         return remoteGifDataSource.getGifs(query, limit, offset)
     }
 
-    override fun addGifs(gifs: List<Gif>): Completable {
-        return deviceGifDataSource.addGifs(gifs)
-    }
-
     override fun addGifsObservable(gifs: List<Gif>): Observable<List<Long>> {
         return deviceGifDataSource.addGifsSingle(gifs).toObservable()
     }
