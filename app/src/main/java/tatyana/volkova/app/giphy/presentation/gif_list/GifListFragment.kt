@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import tatyana.volkova.app.giphy.R
 import tatyana.volkova.app.giphy.databinding.FragmentGifListBinding
 import tatyana.volkova.app.giphy.presentation.adapters.GifListAdapter
+import tatyana.volkova.app.giphy.presentation.hideKeyboard
 import tatyana.volkova.app.giphy.presentation.pagination.paging
 
 @AndroidEntryPoint
@@ -52,6 +53,25 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
         viewModel.getList().observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+
+        binding.searchView.setOnClickListener { binding.searchView.isIconified = false }
+        binding.searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    viewModel.createObserveRequest(it)
+                }
+                requireActivity().hideKeyboard()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    viewModel.createObserveRequest(it)
+                }
+                return true
+            }
+        })
     }
 
     //For logs

@@ -13,7 +13,7 @@ class GetAndSaveGifsUseCase @Inject constructor(
 
     override fun buildUseCaseCompletable(params: Params?): Completable {
         return params?.let {
-            repository.getGifs(it.limit, it.offset)
+            repository.getGifs(query = it.query, limit = it.limit, offset = it.offset)
                 .flatMapCompletable { list ->
                     repository.addGifs(list)
                 }
@@ -22,5 +22,5 @@ class GetAndSaveGifsUseCase @Inject constructor(
         }
     }
 
-    class Params(val limit: Int = 20, val offset: Int = 0)
+    class Params(val limit: Int = 20, val offset: Int = 0, val query: String? = null)
 }

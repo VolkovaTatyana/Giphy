@@ -19,8 +19,9 @@ class RemoteGifDataSource @Inject constructor(
     private val executor: IExecutor
 ) : IRemoteGifDataSource {
 
-    override fun getGifs(limit: Int, offset: Int): Single<List<Gif>> {
-        return apiService.getGifs(limit = limit, offset = offset)
+    override fun getGifs(query: String?, limit: Int, offset: Int): Single<List<Gif>> {
+        val endPoint = if (query.isNullOrEmpty()) "trending" else "search"
+        return apiService.getOrSearchGifs(endPoint = endPoint, query = query, limit = limit, offset = offset)
             .map { dtoMapper.mapFrom(it) }
             .map { it.map(mapper::mapFrom) }
             .subscribeOn(executor.scheduler)

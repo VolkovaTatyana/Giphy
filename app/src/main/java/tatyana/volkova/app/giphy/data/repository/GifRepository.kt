@@ -3,7 +3,6 @@ package tatyana.volkova.app.giphy.data.repository
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import tatyana.volkova.app.giphy.data.device.datasource.DeviceGifDataSource
 import tatyana.volkova.app.giphy.data.idatasource.IDeviceGifDataSource
 import tatyana.volkova.app.giphy.data.idatasource.IRemoteGifDataSource
 import tatyana.volkova.app.giphy.domain.irepository.IGifRepository
@@ -15,8 +14,8 @@ class GifRepository @Inject constructor(
     private val deviceGifDataSource: IDeviceGifDataSource
 ) : IGifRepository {
 
-    override fun getGifs(limit: Int, offset: Int): Single<List<Gif>> {
-        return remoteGifDataSource.getGifs(limit, offset)
+    override fun getGifs(query: String?, limit: Int, offset: Int): Single<List<Gif>> {
+        return remoteGifDataSource.getGifs(query, limit, offset)
     }
 
     override fun addGifs(gifs: List<Gif>): Completable {
