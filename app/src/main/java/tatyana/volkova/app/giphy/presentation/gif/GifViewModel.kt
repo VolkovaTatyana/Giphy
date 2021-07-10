@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import tatyana.volkova.app.giphy.domain.model.Gif
-import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsUseCase
+import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsWithQueryUseCase
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableObserver
 import tatyana.volkova.app.giphy.presentation.gif_list.GifListViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class GifViewModel @Inject constructor(
-    private val observeGifsUseCase: ObserveGifsUseCase
+    private val observeGifsWithQueryUseCase: ObserveGifsWithQueryUseCase
 ) : ViewModel() {
 
     private val pair = MutableLiveData<Pair<List<Gif>, Int>>()
@@ -35,7 +35,7 @@ class GifViewModel @Inject constructor(
     }
 
     private fun observeGifsFromDb() {
-        observeGifsUseCase.execute(object : SimpleDisposableObserver<List<Gif>>() {
+        observeGifsWithQueryUseCase.execute(object : SimpleDisposableObserver<List<Gif>>() {
             override fun onNext(t: List<Gif>) {
                 gifs = t
                 currentGif?.let { gif ->
@@ -51,7 +51,7 @@ class GifViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        observeGifsUseCase.clear()
+        observeGifsWithQueryUseCase.clear()
         super.onCleared()
     }
 }

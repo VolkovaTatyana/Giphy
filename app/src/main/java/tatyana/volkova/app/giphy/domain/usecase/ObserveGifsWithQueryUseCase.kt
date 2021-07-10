@@ -7,9 +7,9 @@ import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.domain.usecase._base.ObservableUseCase
 import javax.inject.Inject
 
-class ObserveGifsUseCase @Inject constructor(
+class ObserveGifsWithQueryUseCase @Inject constructor(
     private val repository: GifRepository
-) : ObservableUseCase<List<Gif>, ObserveGifsUseCase.Params>() {
+) : ObservableUseCase<List<Gif>, ObserveGifsWithQueryUseCase.Params>() {
 
     override fun buildUseCaseObservable(params: Params?): Observable<List<Gif>> {
         return params?.let { params ->

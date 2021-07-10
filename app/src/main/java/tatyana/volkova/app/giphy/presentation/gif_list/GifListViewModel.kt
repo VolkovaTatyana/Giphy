@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.subjects.PublishSubject
 import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveGifsUseCase
-import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsUseCase
+import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsWithQueryUseCase
 import tatyana.volkova.app.giphy.domain.usecase.RemoveGifUseCase
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableCompletableObserver
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableObserver
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GifListViewModel @Inject constructor(
     private val getAndSaveGifsUseCase: GetAndSaveGifsUseCase,
-    private val observeGifsUseCase: ObserveGifsUseCase,
+    private val observeGifsWithQueryUseCase: ObserveGifsWithQueryUseCase,
     private val removeGifUseCase: RemoveGifUseCase
 ) : ViewModel() {
 
@@ -30,13 +30,13 @@ class GifListViewModel @Inject constructor(
     private var hasMore = true
 
     //For search
-    private val searchSubject = PublishSubject.create<ObserveGifsUseCase.Request>()
+    private val searchSubject = PublishSubject.create<ObserveGifsWithQueryUseCase.Request>()
     private var searchQuery: String? = null
 
     init {
         getGifsRemoteAndSaveToDb()
         observeGifsFromDb()
-        searchSubject.onNext(ObserveGifsUseCase.Request(""))
+        searchSubject.onNext(ObserveGifsWithQueryUseCase.Request(""))
     }
 
     private fun getGifsRemoteAndSaveToDb() {
@@ -55,11 +55,11 @@ class GifListViewModel @Inject constructor(
         page = 0
         hasMore = true
         searchQuery = query
-        searchSubject.onNext(ObserveGifsUseCase.Request(query))
+        searchSubject.onNext(ObserveGifsWithQueryUseCase.Request(query))
     }
 
     private fun observeGifsFromDb() {
-        observeGifsUseCase.execute(object : SimpleDisposableObserver<List<Gif>>() {
+        observeGifsWithQueryUseCase.execute(object : SimpleDisposableObserver<List<Gif>>() {
             override fun onNext(t: List<Gif>) {
                 list.postValue(t)
                 if (t.isEmpty().not()) {
@@ -70,7 +70,7 @@ class GifListViewModel @Inject constructor(
             override fun onError(e: Throwable) {
                 Log.e(TAG, e.localizedMessage ?: e.stackTraceToString())
             }
-        }, ObserveGifsUseCase.Params(searchSubject))
+        }, ObserveGifsWithQueryUseCase.Params(searchSubject))
     }
 
     fun removeGif(id: String) {
@@ -94,7 +94,7 @@ class GifListViewModel @Inject constructor(
 
     override fun onCleared() {
         getAndSaveGifsUseCase.clear()
-        observeGifsUseCase.clear()
+        observeGifsWithQueryUseCase.clear()
         removeGifUseCase.clear()
         super.onCleared()
     }
