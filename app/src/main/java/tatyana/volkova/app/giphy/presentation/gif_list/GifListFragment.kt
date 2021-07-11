@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -31,6 +32,9 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
         binding = FragmentGifListBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
+        binding.vm = viewModel
+
+        //To change count of columns when landscape orientation
         binding.rvGifList.layoutManager =
             if (requireActivity().resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 GridLayoutManager(requireContext(), 2)
@@ -38,6 +42,7 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
                 GridLayoutManager(requireContext(), 3)
             }
 
+        //Pagination
         binding.rvGifList.paging {
             viewModel.nextPage()
         }
@@ -54,6 +59,11 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
             adapter.submitList(it)
         }
 
+        viewModel.getMessage().observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        }
+
+        //Search from keyboard
         binding.searchView.setOnClickListener { binding.searchView.isIconified = false }
         binding.searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {

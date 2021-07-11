@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import tatyana.volkova.app.giphy.databinding.ItemGifBinding
 import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.presentation.gif_list.GifListFragmentDirections
-import tatyana.volkova.app.giphy.presentation.gif_list.GifListViewModel
+import tatyana.volkova.app.giphy.presentation.gif_list.IGifListViewModel
 
 class GifListAdapter : ListAdapter<Gif, GifListAdapter.GifViewHolder>(GifItemDiffCallBack()) {
 
-    var viewModel: GifListViewModel? = null
+    var viewModel: IGifListViewModel? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         GifViewHolder(

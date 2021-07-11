@@ -11,7 +11,7 @@
 
         <variable
             name="vm"
-            type="tatyana.volkova.app.giphy.presentation.gif_list.GifListViewModel" />
+            type="tatyana.volkova.app.giphy.presentation.gif_list.IGifListViewModel" />
 
     </data>
 
@@ -23,7 +23,7 @@
             android:id="@+id/ivGif"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="24dp"
             android:gifUrl="@{gif.url}"
             android:minWidth="150dp"

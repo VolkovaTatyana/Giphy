@@ -8,7 +8,7 @@ abstract class SimpleDisposableObserver<T> : DisposableObserver<T>() {
         // Override to handle result
     }
 
-    override fun onNext(t: T) {
+    override fun onNext(result: T) {
         // Override to handle result
     }
 
