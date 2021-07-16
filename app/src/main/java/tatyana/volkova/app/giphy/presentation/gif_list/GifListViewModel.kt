@@ -4,12 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.domain.model.Request
 import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveObservableUseCase
 import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsWithQueryUseCase
+import tatyana.volkova.app.giphy.domain.usecase.ObserveTableUseCase
 import tatyana.volkova.app.giphy.domain.usecase.RemoveGifUseCase
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableCompletableObserver
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableObserver
@@ -17,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GifListViewModel @Inject constructor(
+    private val observeGifsUseCase: ObserveTableUseCase,
     private val getAndSaveGifsUseCase: GetAndSaveObservableUseCase,
     private val observeGifsWithQueryUseCase: ObserveGifsWithQueryUseCase,
     private val removeGifUseCase: RemoveGifUseCase
@@ -36,7 +42,8 @@ class GifListViewModel @Inject constructor(
 
     init {
         getGifsRemoteAndSaveToDb()
-        observeGifsFromDb()
+//        observeGifsFromDb()
+        observeGifs()
         searchSubject.onNext(
             Request(
                 limit = limit,
@@ -44,6 +51,14 @@ class GifListViewModel @Inject constructor(
                 query = ""
             )
         )
+    }
+
+    private fun observeGifs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            observeGifsUseCase.buildUseCase().collect {
+                list.postValue(it)
+            }
+        }
     }
 
     private fun getGifsRemoteAndSaveToDb() {
