@@ -12,10 +12,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import tatyana.volkova.app.giphy.domain.model.Gif
 import tatyana.volkova.app.giphy.domain.model.Request
-import tatyana.volkova.app.giphy.domain.usecase.GetAndSaveObservableUseCase
-import tatyana.volkova.app.giphy.domain.usecase.ObserveGifsWithQueryUseCase
-import tatyana.volkova.app.giphy.domain.usecase.ObserveTableUseCase
-import tatyana.volkova.app.giphy.domain.usecase.RemoveGifUseCase
+import tatyana.volkova.app.giphy.domain.usecase.*
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableCompletableObserver
 import tatyana.volkova.app.giphy.domain.usecase._base.observer.SimpleDisposableObserver
 import javax.inject.Inject
@@ -23,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GifListViewModel @Inject constructor(
     private val observeGifsUseCase: ObserveTableUseCase,
+    private val getGifsUseCase: GetAndSaveGifsUseCase,
     private val getAndSaveGifsUseCase: GetAndSaveObservableUseCase,
     private val observeGifsWithQueryUseCase: ObserveGifsWithQueryUseCase,
     private val removeGifUseCase: RemoveGifUseCase
@@ -37,12 +35,14 @@ class GifListViewModel @Inject constructor(
     private var hasMore = true
 
     //For search
+    private var searchRequest = Request(limit, page * limit, "")
     private val searchSubject = PublishSubject.create<Request>()
     private var searchQuery: String? = null
 
     init {
-        getGifsRemoteAndSaveToDb()
+//        getGifsRemoteAndSaveToDb()
 //        observeGifsFromDb()
+        getGifs()
         observeGifs()
         searchSubject.onNext(
             Request(
@@ -51,6 +51,12 @@ class GifListViewModel @Inject constructor(
                 query = ""
             )
         )
+    }
+
+    private fun getGifs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getGifsUseCase.buildUseCase(GetAndSaveGifsUseCase.Params(searchRequest))
+        }
     }
 
     private fun observeGifs() {
@@ -82,13 +88,19 @@ class GifListViewModel @Inject constructor(
         page = 0
         hasMore = true
         searchQuery = query
-        searchSubject.onNext(
-            Request(
-                limit = limit,
-                offset = page * limit,
-                query = query
-            )
+//        searchSubject.onNext(
+//            Request(
+//                limit = limit,
+//                offset = page * limit,
+//                query = query
+//            )
+//        )
+        searchRequest = Request(
+            limit = limit,
+            offset = page * limit,
+            query = query
         )
+        getGifsUseCase
     }
 
     private fun observeGifsFromDb() {
@@ -121,13 +133,19 @@ class GifListViewModel @Inject constructor(
     fun nextPage() {
         if (hasMore) {
             page++
-            searchSubject.onNext(
-                Request(
-                    limit = limit,
-                    offset = page * limit,
-                    query = searchQuery
-                )
+//            searchSubject.onNext(
+//                Request(
+//                    limit = limit,
+//                    offset = page * limit,
+//                    query = searchQuery
+//                )
+//            )
+            searchRequest = Request(
+                limit = limit,
+                offset = page * limit,
+                query = searchQuery
             )
+            getGifs()
         }
     }
 

@@ -67,7 +67,7 @@ class GifListFragment : Fragment(R.layout.fragment_gif_list) {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
-                    viewModel.createObserveRequest(it)
+//                    viewModel.createObserveRequest(it)
                 }
                 return true
             }
